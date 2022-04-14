@@ -1,5 +1,5 @@
 build-job:
-  image: alpine:last
+  image: alpine
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!, docker-compose up"
