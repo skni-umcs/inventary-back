@@ -3,8 +3,20 @@ from fastapi.responses import JSONResponse
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
+from datetime import timedelta
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -50,11 +62,15 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
 @app.post('/login')
 def login(user: User, Authorize: AuthJWT = Depends()):
     if user.username != "test" or user.password != "test":
-        raise HTTPException(status_code=401,detail="Bad username or password")
+        raise HTTPException(status_code=401, detail="Bad username or password")
 
     # subject identifier for who this token is for example id or username from database
-    access_token = Authorize.create_access_token(subject=user.username)
-    return {"access_token": access_token}
+    access_token = Authorize.create_access_token(subject=user.username, expires_time=timedelta(minutes=15))
+    refresh_token = Authorize.create_refresh_token(subject=user.username)
+
+    return {"message": "OK",
+            "token": access_token,
+            "refresh_token": refresh_token}
 
 
 # protect endpoint with function jwt_required(), which requires
@@ -65,3 +81,20 @@ def user(Authorize: AuthJWT = Depends()):
 
     current_user = Authorize.get_jwt_subject()
     return {"user": current_user}
+
+
+@app.get("/refresh")
+def refresh(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_refresh_token_required()
+
+    current_user = Authorize.get_jwt_subject()
+    access_token = Authorize.create_access_token(subject=current_user, fresh=False, expires_time=timedelta(days=30))
+
+    return {"token": access_token}
+
+
+@app.post('/logout')
+def logout(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+
+    return {"msg": "Successfully logout"}
