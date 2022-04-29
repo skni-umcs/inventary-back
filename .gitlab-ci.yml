@@ -1,3 +1,6 @@
+rules:
+  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
 image: docker
 before_script:
   - echo "START"
@@ -5,7 +8,6 @@ before_script:
 
 
 build-job:
-
   stage: build
   script:
     - echo "build docker image"
@@ -19,12 +21,12 @@ test-job1:
 test-job2:
   stage: test
   script:
-    - echo "TEST FOR docker-compose"
+    #- echo "TEST FOR docker-compose"
     - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
-    - docker-compose up -d
+    #- docker-compose up -d
     - sleep 30
     - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - docker-compose down 
+    #- docker-compose down 
 
 deploy-prod:
   stage: deploy
