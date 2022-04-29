@@ -1,3 +1,7 @@
+before_script:
+  - docker info
+
+
 build-job:
 #  image: ubuntu:20.04
   stage: build
