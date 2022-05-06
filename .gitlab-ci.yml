@@ -2,8 +2,8 @@ image: docker
 before_script:
   - echo "START"
   - docker info
-rules:
-  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+#rules:
+#  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 
 build-job:
