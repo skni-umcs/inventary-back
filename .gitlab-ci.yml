@@ -2,8 +2,6 @@ image: docker
 before_script:
   - echo "START"
   - docker info
-#rules:
-#  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 
 build-job:
@@ -11,16 +9,14 @@ build-job:
   script:
     - echo "build docker image"
     - docker build .
-  rules:
-  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
 
 
 test-job1:
   stage: test
   script:
     - echo "ADD TEST FOR API"
-  rules:
-  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
 
 
 test-job2:
@@ -32,13 +28,10 @@ test-job2:
     - sleep 30
     - echo "which simulates a test that runs 20 seconds longer than test-job1"
     #- docker-compose down 
-  rules:
-  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 deploy-prod:
   stage: deploy
   script:
     - echo "This job deploys something from the $CI_COMMIT_BRANCH branch. DOCKER"
 #    - docker pull
-  rules:
-  - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
