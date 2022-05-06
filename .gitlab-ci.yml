@@ -21,8 +21,8 @@ build-job:
   script:
     - echo "build docker image"
     - docker build .
-    - ssh -p 22760 inventary-gitlab@yuumi.skni.umcs.pl "cd ~/inventaryapi.git && git pull"
-    - ssh -p 22760 inventary-gitlab@yuumi.skni.umcs.pl "cd ~/inventaryapi.git && docker build . && docker-compose up -d"
+    - ssh -p 22760 inventary-gitlab@yuumi.skni.umcs.pl "cd ~/inventaryapi && git pull"
+    - ssh -p 22760 inventary-gitlab@yuumi.skni.umcs.pl "cd ~/inventaryapi && docker build . && docker-compose up -d"
     - sleep 2
 
 
