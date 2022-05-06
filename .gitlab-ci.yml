@@ -8,7 +8,7 @@ before_script:
   - mkdir -p ~/.ssh
   - chmod 700 ~/.ssh
 
-  - ssh-keyscan yuumi.skni.umcs.pl >> ~/.ssh/known_hosts
+  - ssh-keyscan -p 22760 yuumi.skni.umcs.pl >> ~/.ssh/known_hosts
   - chmod 644 ~/.ssh/known_hosts
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - docker info 
@@ -19,7 +19,7 @@ build-job:
   script:
     - echo "build docker image"
     - docker build .
-    - - ssh inventary-gitlab@yuumi.skni.umcs.pl "touch 1.txt"
+    - - ssh -p 22760 inventary-gitlab@yuumi.skni.umcs.pl "touch 1.txt"
 
 
 
