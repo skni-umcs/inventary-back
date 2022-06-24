@@ -12,8 +12,25 @@ services:
     restart: always
     networks:
       - back
-    # depends_on:
-    #   - db
+#     depends_on:
+#       - db
+  db:
+    image: mysql
+#    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=skrzat
+      - MYSQL_USER=skrzat
+      - MYSQL_PASSWORD=skrzat
+    ports:
+     - "3306:3306"
+    volumes:
+     - ./data/mysql:/var/lib/mysql
+    networks:
+      - back
+
+
 networks:
     back:
 
