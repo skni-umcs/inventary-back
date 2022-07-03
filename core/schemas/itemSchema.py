@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class Item(BaseModel):
+class ItemSchema(BaseModel):
     id: int
     name: str
     category: str

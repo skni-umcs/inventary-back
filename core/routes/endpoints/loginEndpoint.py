@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from core.schemas import User
+from core.schemas import UserSchema
 from fastapi_jwt_auth import AuthJWT
 from datetime import timedelta
 
@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.post('/login')
-def login(user: User, Authorize: AuthJWT = Depends()):
+def login(user: UserSchema, Authorize: AuthJWT = Depends()):
     if user.username != "test" or user.password != "test":
         raise HTTPException(status_code=401, detail="Bad username or password")
 

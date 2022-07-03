@@ -1,2 +1,4 @@
 .gitlab-ci.yml
 
+data/
+

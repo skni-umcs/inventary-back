@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from core.routes.endpoints.item_ import list
+from core.routes.endpoints.itemEndpoints import list
 
 router = APIRouter()
 
