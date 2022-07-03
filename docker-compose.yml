@@ -20,9 +20,9 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=skrzat
-      - MYSQL_USER=skrzat
-      - MYSQL_PASSWORD=skrzat
+      - MYSQL_DATABASE=inventary
+      - MYSQL_USER=inventary
+      - MYSQL_PASSWORD=inventary
     ports:
      - "3306:3306"
     volumes:
