@@ -10,7 +10,7 @@ def add(item: ItemSchema):
     except ValueError:
         value = None
     warehouse_id = 1  # TODO find warehouse id
-    user_id = 3  # TODO determine user id
+    user_id = 1  # TODO determine user id
     keyword_string = " ".join(item.keywords)
     row = ItemModel(item.name, category_id, value, warehouse_id, item.description, keyword_string, user_id)
     session.add(row)
