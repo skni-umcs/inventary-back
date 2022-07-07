@@ -12,7 +12,7 @@ def login(user: UserSchema, Authorize: AuthJWT = Depends()):
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # subject identifier for who this token is for example id or username from database
-    access_token = Authorize.create_access_token(subject=user.username, expires_time=timedelta(minutes=15))
+    access_token = Authorize.create_access_token(subject=user.username, expires_time=timedelta(minutes=15), fresh=True)
     refresh_token = Authorize.create_refresh_token(subject=user.username)
 
     return {"message": "OK",
