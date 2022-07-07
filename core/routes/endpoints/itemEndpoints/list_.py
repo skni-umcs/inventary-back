@@ -14,14 +14,3 @@ def list_(length: int, skip: int, Authorize: AuthJWT = Depends()):
     return [
         itemik
     ]
-
-
-@router.post("/add")
-def add(item: ItemSchema, Authorize: AuthJWT = Depends()):
-    Authorize.jwt_required()
-
-    ic.add(item)
-
-    return {
-        "message": "success",
-    }
