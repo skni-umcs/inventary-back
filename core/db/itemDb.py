@@ -20,13 +20,22 @@ def add(item: ItemSchema):
 
 def get_by_id(itemId: int):
     model = IC.get_by_id(itemId)
+    categoryModel = CC.get_by_id(model.category_id)
+    warehouseModel = WC.get_by_id(model.warehouse_id)
+    keywords = model.keywords.split(';')
+    value = str(model.value)
 
     item = ItemSchema(
         id=model.id,
         name=model.name,
-        category=model.category_id,
-
+        category=categoryModel.name,
+        value=value,
+        warehouse=warehouseModel.name,
+        description=model.description,
+        keywords=keywords
     )
+
+    return item
 
 
 def get_list(length: int = 10, skip: int = 0):
