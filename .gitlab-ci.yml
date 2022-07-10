@@ -10,7 +10,7 @@ before_script:
 
 #  - ssh-keyscan -p 22760 yuumi.skni.umcs.pl >> ~/.ssh/known_hosts
 #  - chmod 644 ~/.ssh/known_hosts
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  # - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   - docker info
 #  - ssh -p 22760 inventary-gitlab@yuumi.skni.umcs.pl "git clone ssh://git@git.skni.umcs.pl:2794/jan.bylina/inventaryapi.git"
 
