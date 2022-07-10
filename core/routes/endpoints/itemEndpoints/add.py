@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi_jwt_auth import AuthJWT
 from core.schemas.itemSchema import ItemSchema
-import core.crud.itemCrud as IC
+import core.db.itemDb as ID
 
 router = APIRouter()
 
@@ -10,7 +10,7 @@ router = APIRouter()
 def add(item: ItemSchema, Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
-    IC.add(item)
+    ID.add(item)
 
     return {
         "message": "success",

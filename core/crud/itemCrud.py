@@ -1,19 +1,9 @@
 from . import session
-from core.schemas.itemSchema import ItemSchema as ItemSchema
-from core.models.itemModel import ItemModel as ItemModel
+from core.models.itemModel import ItemModel
 
 
-def add(item: ItemSchema):
-    category_id = 1  # TODO find category id
-    try:
-        value = float(item.value)
-    except ValueError:
-        value = None
-    warehouse_id = 1  # TODO find warehouse id
-    user_id = 1  # TODO determine user id
-    keyword_string = " ".join(item.keywords)
-    row = ItemModel(item.name, category_id, value, warehouse_id, item.description, keyword_string, user_id)
-    session.add(row)
+def add(item: ItemModel):
+    session.add(item)
     session.commit()
 
 
@@ -21,3 +11,15 @@ def get_by_id(itemId: int):
     item = session.query(ItemModel).filter(ItemModel.id == itemId).first()
 
     return item
+
+
+def get_all_xd():
+    items = session.query(ItemModel)
+
+    return items
+
+
+def get_list(length: int = 10, skip: int = 0):
+    items = session.query(ItemModel).offset(skip).limit(length)
+
+    return items

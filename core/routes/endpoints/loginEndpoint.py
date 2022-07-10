@@ -2,13 +2,19 @@ from fastapi import APIRouter, HTTPException, Depends
 from core.schemas import UserSchema
 from fastapi_jwt_auth import AuthJWT
 from datetime import timedelta
+import core.db.userDb as UD
 
 router = APIRouter()
 
 
 @router.post('/login')
 def login(user: UserSchema, Authorize: AuthJWT = Depends()):
-    if user.username != "test" or user.password != "test":
+    try:
+        userDB = UD.get_by_username(user.username)
+    except AttributeError:
+        raise HTTPException(status_code=401, detail="Bad username or password")
+
+    if user.username != userDB.username or user.password != userDB.password:
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # subject identifier for who this token is for example id or username from database

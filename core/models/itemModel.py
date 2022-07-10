@@ -6,7 +6,7 @@ from core.models.warehouseModel import WarehouseModel
 
 class ItemModel(Base):
     __tablename__ = "item"
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
     name = Column(String(250))
     category_id = Column(Integer, ForeignKey(CategoryModel.id))
     value = Column(Integer)
@@ -23,4 +23,3 @@ class ItemModel(Base):
         self.description = description
         self.keywords = keywords
         self.user_id = user_id
-
