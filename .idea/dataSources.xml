@@ -15,5 +15,12 @@
       <jdbc-url>jdbc:mysql://localhost:3306/inventary</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="yuumi" uuid="bd153521-fddf-49ec-a000-6779c4486ad7">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://yuumi.skni.umcs.pl:3306/inventary</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

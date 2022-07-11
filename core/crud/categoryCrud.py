@@ -7,3 +7,8 @@ def get_by_id(categoryId: int):
 
     return model
 
+
+def get_by_name(categoryName: str):
+    model = session.query(CategoryModel).filter(CategoryModel.name == categoryName).first()
+
+    return model

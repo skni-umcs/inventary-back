@@ -1,62 +1,113 @@
 import core.crud.itemCrud as IC
-import core.crud.categoryCrud as CC
-import core.crud.warehouseCrud as WC
+import core.db.categoryDb as CD
+import core.db.warehouseDb as WD
 from core.models.itemModel import ItemModel
+from core.models.categoryModel import CategoryModel
+from core.models.warehouseModel import WarehouseModel
 from core.schemas.itemSchema import ItemSchema
 
 
-def add(item: ItemSchema):
-    category_id = 1  # TODO find category id
+def add(itemSchema: ItemSchema, userId: int):
+
+    categoryModel: CategoryModel = CD.get_by_name(itemSchema.category)
+    categoryId = categoryModel.id
+
+    warehouseModel: WarehouseModel = WD.get_by_name(itemSchema.warehouse)
+    warehouseId = warehouseModel.id
+
     try:
-        value = float(item.value)
+        value = float(itemSchema.value)
     except ValueError:
         value = None
-    warehouse_id = 1  # TODO find warehouse id
-    user_id = 1  # TODO determine user id
-    keyword_string = ";".join(item.keywords)
-    model = ItemModel(item.name, category_id, value, warehouse_id, item.description, keyword_string, user_id)
-    IC.add(model)
+
+    keyword_string = ";".join(itemSchema.keywords)
+    itemModel = ItemModel(
+        name=itemSchema.name,
+        category_id=categoryId,
+        value=value,
+        warehouse_id=warehouseId,
+        description=itemSchema.description,
+        keywords=keyword_string,
+        user_id=userId
+    )
+    IC.add(itemModel)
 
 
 def get_by_id(itemId: int):
     model = IC.get_by_id(itemId)
-    categoryModel = CC.get_by_id(model.category_id)
-    warehouseModel = WC.get_by_id(model.warehouse_id)
+    categoryModel = CD.get_by_id(model.category_id)
+    warehouseModel = WD.get_by_id(model.warehouse_id)
     keywords = model.keywords.split(';')
     value = str(model.value)
 
-    item = ItemSchema(
+    itemSchema = ItemSchema(
         id=model.id,
         name=model.name,
         category=categoryModel.name,
         value=value,
         warehouse=warehouseModel.name,
         description=model.description,
-        keywords=keywords
+        keywords=keywords,
+        user_id=model.user_id
     )
 
-    return item
+    return itemSchema
 
 
 def get_list(length: int = 10, skip: int = 0):
 
     models = IC.get_list(length=length, skip=skip)
 
-    items = []
+    itemSchemas = []
     for model in models:
-        categoryModel = CC.get_by_id(model.category_id)
-        warehouseModel = WC.get_by_id(model.warehouse_id)
+        categorySchema = CD.get_by_id(model.category_id)
+        warehouseSchema = WD.get_by_id(model.warehouse_id)
         keywords = model.keywords.split(';')
         value = str(model.value)
-        item = ItemSchema(
+        itemSchema = ItemSchema(
             id=model.id,
             name=model.name,
-            category=categoryModel.name,
+            category=categorySchema.name,
             value=value,
-            warehouse=warehouseModel.name,
+            warehouse=warehouseSchema.name,
             description=model.description,
-            keywords=keywords
+            keywords=keywords,
+            user_id=model.user_id
         )
-        items.append(item)
+        itemSchemas.append(itemSchema)
 
-    return items
+    return itemSchemas
+
+
+def delete(itemId: int):
+    get_by_id(itemId)
+    IC.delete(itemId)
+
+
+def edit(itemSchema: ItemSchema):
+
+    categoryModel: CategoryModel = CD.get_by_name(itemSchema.category)
+    categoryId = categoryModel.id
+
+    warehouseModel: WarehouseModel = WD.get_by_name(itemSchema.warehouse)
+    warehouseId = warehouseModel.id
+
+    try:
+        value = float(itemSchema.value)
+    except ValueError:
+        value = None
+
+    keyword_string = ";".join(itemSchema.keywords)
+
+    itemModel = ItemModel(
+        id=itemSchema.id,
+        name=itemSchema.name,
+        category_id=categoryId,
+        value=value,
+        warehouse_id=warehouseId,
+        description=itemSchema.description,
+        keywords=keyword_string,
+        user_id=itemSchema.user_id
+    )
+
+    IC.edit(itemModel)
