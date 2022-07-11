@@ -26,10 +26,10 @@ def get_item(itemId: int, Authorize: AuthJWT = Depends()):
 def delete(itemId: int, Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
-    # try:
-    ID.delete(itemId)
-    # except AttributeError:
-    #     raise HTTPException(status_code=404, detail="Item with that id not found")
+    try:
+        ID.delete(itemId)
+    except AttributeError:
+        raise HTTPException(status_code=404, detail="Item with that id not found")
 
     return {
         "message": "success",
