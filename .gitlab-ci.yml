@@ -1,7 +1,5 @@
 image: python:3.10-alpine
-before_script:
-  - pip install -r requirements.txt
-  - pip install isort black flake8 pylint
+
 stages:
   - code-analyze
   - test
@@ -9,6 +7,8 @@ stages:
 isort:
   stage: code-analyze
   script:
+    - pip install -r requirements.txt
+    - pip install isort
     - isort . --check-only
   allow_failure: true
 #  only:
@@ -17,18 +17,24 @@ isort:
 black:
   stage: code-analyze
   script:
+    - pip install -r requirements.txt
+    - pip install black
     - black . --check --verbose --diff --color
   allow_failure: true
 
 flake8:
   stage: code-analyze
   script:
+    - pip install -r requirements.txt
+    - pip install flake8
     - flake8 .
   allow_failure: true
 
 pylint:
   stage: code-analyze
   script:
+    - pip install -r requirements.txt
+    - pip install pylint
     - find . -name "*.py" -exec pylint {} \;
   allow_failure: true
 
