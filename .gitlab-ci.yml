@@ -36,6 +36,6 @@ test-docker:
     - docker:dind
   script:
     - docker build .
-  only:
-    - merge_requests
-    - master
+#  only:
+#    - merge_requests
+#    - master
