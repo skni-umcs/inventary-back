@@ -1,3 +1,3 @@
 # inventaryAPI #
 
-REST API in fastApi with docker 
+REST API in fastApi with docker
