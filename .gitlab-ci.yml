@@ -1,7 +1,7 @@
 image: python:3.10
 before_script:
   - pip install -r requirements.txt
-  - pip install isort, black, flake8, pylint
+  - pip install isort black flake8 pylint
 stages:
   - code-analyze
   - test
