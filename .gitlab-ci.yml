@@ -1,4 +1,4 @@
-image: python:3.10
+image: python:3.10-alpine
 before_script:
   - pip install -r requirements.txt
   - pip install isort black flake8 pylint
@@ -9,25 +9,28 @@ stages:
 isort:
   stage: code-analyze
   script:
-    - ls -la
     - isort . --check-only
-  only:
+  allow_failure: true
+#  only:
 
 
 black:
   stage: code-analyze
   script:
     - black . --check --verbose --diff --color
+  allow_failure: true
 
 flake8:
   stage: code-analyze
   script:
     - flake8 .
+  allow_failure: true
 
 pylint:
   stage: code-analyze
   script:
     - find . -name "*.py" -exec pylint {} \;
+  allow_failure: true
 
 test-docker:
   image: docker:latest
