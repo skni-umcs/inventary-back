@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class ItemSchema(BaseModel):
-    id: int
+    id: int | None = None
     name: str
     category: str
     value: str

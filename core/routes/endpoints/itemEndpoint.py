@@ -10,8 +10,8 @@ router = APIRouter()
 router.include_router(list_.router)
 
 
-@router.get("/")
-def get_item(itemId: int, Authorize: AuthJWT = Depends()):
+@router.get("/{itemId}")
+def get_item_by_id(itemId: int, Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
     try:
@@ -22,8 +22,8 @@ def get_item(itemId: int, Authorize: AuthJWT = Depends()):
     return item
 
 
-@router.delete("/")
-def delete(itemId: int, Authorize: AuthJWT = Depends()):
+@router.delete("/{itemId}")
+def delete_item_by_id(itemId: int, Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
     try:
@@ -37,7 +37,7 @@ def delete(itemId: int, Authorize: AuthJWT = Depends()):
 
 
 @router.post("/")
-def add(item: ItemSchema, Authorize: AuthJWT = Depends()):
+def add_item(item: ItemSchema, Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
     currentUser = Authorize.get_jwt_subject()
@@ -56,8 +56,13 @@ def add(item: ItemSchema, Authorize: AuthJWT = Depends()):
 
 
 @router.put("/")
-def edit(itemSchema: ItemSchema, Authorize: AuthJWT = Depends()):
+def edit_item(itemSchema: ItemSchema, Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
+
+    try:
+        assert itemSchema.id is not None
+    except AssertionError:
+        raise HTTPException(status_code=422, detail="Item id required")
 
     currentUser = Authorize.get_jwt_subject()
 

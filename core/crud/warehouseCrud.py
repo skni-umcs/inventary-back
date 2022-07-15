@@ -2,18 +2,37 @@ from . import session
 from core.models.warehouseModel import WarehouseModel
 
 
-def add(item: WarehouseModel):
-    session.add(item)
+def add(warehouseModel: WarehouseModel):
+    session.add(warehouseModel)
     session.commit()
 
 
 def get_by_id(warehouseId: int):
-    item = session.query(WarehouseModel).filter(WarehouseModel.id == warehouseId).first()
+    warehouseModel = session.query(WarehouseModel).filter(WarehouseModel.id == warehouseId).first()
 
-    return item
+    return warehouseModel
 
 
 def get_by_name(name: str):
-    item = session.query(WarehouseModel).filter(WarehouseModel.name == name).first()
+    warehouseModel = session.query(WarehouseModel).filter(WarehouseModel.name == name).first()
 
-    return item
+    return warehouseModel
+
+
+def get_all():
+    warehouseModels = session.query(WarehouseModel)
+
+    return warehouseModels
+
+
+def delete(warehouseId: int):
+    session.query(WarehouseModel).filter(WarehouseModel.id == warehouseId).delete()
+    session.commit()
+
+
+def edit(editModel: WarehouseModel):
+    warehouseModel: WarehouseModel = session.query(WarehouseModel).filter(WarehouseModel.id == editModel.id).first()
+
+    warehouseModel.name = editModel.name
+
+    session.commit()

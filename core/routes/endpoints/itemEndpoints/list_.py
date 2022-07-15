@@ -6,7 +6,7 @@ router = APIRouter()
 
 
 @router.get("/list")
-def list_(length: int, skip: int, Authorize: AuthJWT = Depends()):
+def get_list_of_items(length: int, skip: int, Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
     items = ID.get_list(length, skip)

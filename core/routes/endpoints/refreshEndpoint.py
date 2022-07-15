@@ -6,7 +6,7 @@ router = APIRouter()
 
 
 @router.get("/refresh")
-def refresh(Authorize: AuthJWT = Depends()):
+def refresh_token(Authorize: AuthJWT = Depends()):
     Authorize.jwt_refresh_token_required()
 
     current_user = Authorize.get_jwt_subject()
