@@ -9,4 +9,4 @@ class ItemSchema(BaseModel):
     warehouse: str
     description: str
     keywords: list
-    user_id: int
+    user_id: int | None = None
