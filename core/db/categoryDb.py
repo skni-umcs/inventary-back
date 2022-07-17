@@ -1,21 +1,11 @@
 import core.crud.categoryCrud as CC
 from core.schemas.categorySchema import CategorySchema
 from core.models.categoryModel import CategoryModel
+from . import Session
 
 
-def get_by_id(categoryId: int):
-    categoryModel: CategoryModel = CC.get_by_id(categoryId)
-
-    categorySchema = CategorySchema(
-        id=categoryModel.id,
-        name=categoryModel.name
-    )
-
-    return categorySchema
-
-
-def get_by_name(categoryName: str):
-    categoryModel: CategoryModel = CC.get_by_name(categoryName)
+def get_by_id(session: Session, categoryId: int):
+    categoryModel: CategoryModel = CC.get_by_id(session, categoryId)
 
     categorySchema = CategorySchema(
         id=categoryModel.id,
@@ -25,8 +15,19 @@ def get_by_name(categoryName: str):
     return categorySchema
 
 
-def get_all():
-    categoryModels = CC.get_all()
+def get_by_name(session: Session, categoryName: str):
+    categoryModel: CategoryModel = CC.get_by_name(session, categoryName)
+
+    categorySchema = CategorySchema(
+        id=categoryModel.id,
+        name=categoryModel.name
+    )
+
+    return categorySchema
+
+
+def get_all(session: Session):
+    categoryModels = CC.get_all(session)
 
     categorySchemes = []
     for categoryModel in categoryModels:
@@ -39,12 +40,12 @@ def get_all():
     return categorySchemes
 
 
-def add(categorySchema: CategorySchema):
+def add(session: Session, categorySchema: CategorySchema):
 
     exists = True
 
     try:
-        get_by_name(categorySchema.name)
+        get_by_name(session, categorySchema.name)
     except AttributeError:
         exists = False
 
@@ -54,19 +55,19 @@ def add(categorySchema: CategorySchema):
         name=categorySchema.name
     )
 
-    CC.add(categoryModel)
+    CC.add(session, categoryModel)
 
 
-def delete(categoryId: int):
-    get_by_id(categoryId)
-    CC.delete(categoryId)
+def delete(session: Session, categoryId: int):
+    get_by_id(session, categoryId)
+    CC.delete(session, categoryId)
 
 
-def edit(categorySchema: CategorySchema):
+def edit(session: Session, categorySchema: CategorySchema):
     exists = True
 
     try:
-        get_by_name(categorySchema.name)
+        get_by_name(session, categorySchema.name)
     except AttributeError:
         exists = False
 
@@ -77,4 +78,4 @@ def edit(categorySchema: CategorySchema):
         name=categorySchema.name
     )
 
-    CC.edit(categoryModel)
+    CC.edit(session, categoryModel)

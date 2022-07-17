@@ -4,6 +4,7 @@ from core.routes.endpoints.itemEndpoints import list_
 import core.db.itemDb as ID
 import core.db.userDb as UD
 from core.schemas.itemSchema import ItemSchema
+from .. import get_db_session, Session
 
 router = APIRouter()
 
@@ -11,11 +12,11 @@ router.include_router(list_.router)
 
 
 @router.get("/{itemId}")
-def get_item_by_id(itemId: int, Authorize: AuthJWT = Depends()):
+def get_item_by_id(itemId: int, Authorize: AuthJWT = Depends(), session: Session = Depends(get_db_session)):
     Authorize.jwt_required()
 
     try:
-        item = ID.get_by_id(itemId)
+        item = ID.get_by_id(session, itemId)
     except AttributeError:
         raise HTTPException(status_code=404, detail="Item with that id not found")
 
@@ -23,11 +24,11 @@ def get_item_by_id(itemId: int, Authorize: AuthJWT = Depends()):
 
 
 @router.delete("/{itemId}")
-def delete_item_by_id(itemId: int, Authorize: AuthJWT = Depends()):
+def delete_item_by_id(itemId: int, Authorize: AuthJWT = Depends(), session: Session = Depends(get_db_session)):
     Authorize.jwt_required()
 
     try:
-        ID.delete(itemId)
+        ID.delete(session, itemId)
     except AttributeError:
         raise HTTPException(status_code=404, detail="Item with that id not found")
 
@@ -37,15 +38,15 @@ def delete_item_by_id(itemId: int, Authorize: AuthJWT = Depends()):
 
 
 @router.post("/")
-def add_item(item: ItemSchema, Authorize: AuthJWT = Depends()):
+def add_item(item: ItemSchema, Authorize: AuthJWT = Depends(), session: Session = Depends(get_db_session)):
     Authorize.jwt_required()
 
     currentUser = Authorize.get_jwt_subject()
 
-    userSchema = UD.get_by_username(currentUser)
+    userSchema = UD.get_by_username(session, currentUser)
 
     try:
-        ID.add(item, userSchema.id)
+        ID.add(session, item, userSchema.id)
     except AttributeError:
         raise HTTPException(status_code=422, detail="Jest jakiś zły warehouse albo kategoria albo coś nie wiem bo"
                                                     "jeszcze nie zrobiłem customowych błędów peepoBlush")
@@ -56,7 +57,7 @@ def add_item(item: ItemSchema, Authorize: AuthJWT = Depends()):
 
 
 @router.put("/")
-def edit_item(itemSchema: ItemSchema, Authorize: AuthJWT = Depends()):
+def edit_item(itemSchema: ItemSchema, Authorize: AuthJWT = Depends(), session: Session = Depends(get_db_session)):
     Authorize.jwt_required()
 
     try:
@@ -66,12 +67,12 @@ def edit_item(itemSchema: ItemSchema, Authorize: AuthJWT = Depends()):
 
     currentUser = Authorize.get_jwt_subject()
 
-    userSchema = UD.get_by_username(currentUser)
+    userSchema = UD.get_by_username(session, currentUser)
 
     itemSchema.user_id = userSchema.id
 
     try:
-        ID.edit(itemSchema)
+        ID.edit(session, itemSchema)
     except AttributeError:
         raise HTTPException(status_code=422, detail="Jest jakiś zły warehouse albo kategoria albo coś nie wiem bo"
                                                     "jeszcze nie zrobiłem customowych błędów peepoBlush")

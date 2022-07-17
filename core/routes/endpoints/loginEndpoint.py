@@ -3,14 +3,15 @@ from core.schemas import UserSchema
 from fastapi_jwt_auth import AuthJWT
 from datetime import timedelta
 import core.db.userDb as UD
+from .. import get_db_session, Session
 
 router = APIRouter()
 
 
 @router.post('/login')
-def login(user: UserSchema, Authorize: AuthJWT = Depends()):
+def login(user: UserSchema, Authorize: AuthJWT = Depends(), session: Session = Depends(get_db_session)):
     try:
-        userDB = UD.get_by_username(user.username)
+        userDB = UD.get_by_username(session, user.username)
     except AttributeError:
         raise HTTPException(status_code=401, detail="Bad username or password")
 

@@ -1,36 +1,36 @@
-from . import session
+from . import Session
 from core.models.itemModel import ItemModel
 
 
-def add(itemModel: ItemModel):
+def add(session: Session, itemModel: ItemModel):
     session.add(itemModel)
     session.commit()
 
 
-def get_by_id(itemId: int):
+def get_by_id(session: Session, itemId: int):
     itemModel: ItemModel = session.query(ItemModel).filter(ItemModel.id == itemId).first()
 
     return itemModel
 
 
-def get_all_xd():
+def get_all_xd(session: Session):
     items = session.query(ItemModel)
 
     return items
 
 
-def get_list(length: int = 10, skip: int = 0):
+def get_list(session: Session, length: int = 10, skip: int = 0):
     itemModels = session.query(ItemModel).offset(skip).limit(length)
 
     return itemModels
 
 
-def delete(itemId: int):
+def delete(session: Session, itemId: int):
     session.query(ItemModel).filter(ItemModel.id == itemId).delete()
     session.commit()
 
 
-def edit(editModel: ItemModel):
+def edit(session: Session, editModel: ItemModel):
     itemModel: ItemModel = session.query(ItemModel).filter(ItemModel.id == editModel.id).first()
 
     itemModel.name = editModel.name

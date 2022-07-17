@@ -1,21 +1,11 @@
 import core.crud.warehouseCrud as WC
 from core.models.warehouseModel import WarehouseModel
 from core.schemas.warehouseSchema import WarehouseSchema
+from . import Session
 
 
-def get_by_name(warehouseName: str):
-    warehouseModel: WarehouseModel = WC.get_by_name(warehouseName)
-
-    warehouseSchema = WarehouseSchema(
-        id=warehouseModel.id,
-        name=warehouseModel.name
-    )
-
-    return warehouseSchema
-
-
-def get_by_id(warehouseId: int):
-    warehouseModel: WarehouseModel = WC.get_by_id(warehouseId)
+def get_by_name(session: Session, warehouseName: str):
+    warehouseModel: WarehouseModel = WC.get_by_name(session, warehouseName)
 
     warehouseSchema = WarehouseSchema(
         id=warehouseModel.id,
@@ -25,8 +15,19 @@ def get_by_id(warehouseId: int):
     return warehouseSchema
 
 
-def get_all():
-    warehouseModels = WC.get_all()
+def get_by_id(session: Session, warehouseId: int):
+    warehouseModel: WarehouseModel = WC.get_by_id(session, warehouseId)
+
+    warehouseSchema = WarehouseSchema(
+        id=warehouseModel.id,
+        name=warehouseModel.name
+    )
+
+    return warehouseSchema
+
+
+def get_all(session: Session):
+    warehouseModels = WC.get_all(session)
 
     warehouseSchemes = []
     for warehouseModel in warehouseModels:
@@ -39,12 +40,12 @@ def get_all():
     return warehouseSchemes
 
 
-def add(warehouseSchema: WarehouseSchema):
+def add(session: Session, warehouseSchema: WarehouseSchema):
 
     exists = True
 
     try:
-        get_by_name(warehouseSchema.name)
+        get_by_name(session, warehouseSchema.name)
     except AttributeError:
         exists = False
 
@@ -54,27 +55,27 @@ def add(warehouseSchema: WarehouseSchema):
         name=warehouseSchema.name
     )
 
-    WC.add(warehouseModel)
+    WC.add(session, warehouseModel)
 
 
-def delete(warehouseId: int):
-    get_by_id(warehouseId)
-    WC.delete(warehouseId)
+def delete(session: Session, warehouseId: int):
+    get_by_id(session, warehouseId)
+    WC.delete(session, warehouseId)
 
 
-def edit(warehouseSchema: WarehouseSchema):
+def edit(session: Session, warehouseSchema: WarehouseSchema):
     exists = True
 
     try:
-        get_by_name(warehouseSchema.name)
+        get_by_name(session, warehouseSchema.name)
     except AttributeError:
         exists = False
 
     assert not exists
 
-    categoryModel = WarehouseSchema(
+    categoryModel = WarehouseModel(
         id=warehouseSchema.id,
         name=warehouseSchema.name
     )
 
-    WC.edit(categoryModel)
+    WC.edit(session, categoryModel)
