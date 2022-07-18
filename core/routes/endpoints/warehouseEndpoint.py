@@ -68,7 +68,7 @@ def edit_warehouse(warehouseSchema: WarehouseSchema, Authorize: AuthJWT = Depend
         raise HTTPException(status_code=422, detail="Warehouse id required")
 
     try:
-        WD.edit(warehouseSchema)
+        WD.edit(session, warehouseSchema)
     except (AttributeError, AssertionError):
         raise HTTPException(status_code=422, detail="Warehouse with that name already exists (probably :P)")
 
