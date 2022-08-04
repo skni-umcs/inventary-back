@@ -41,5 +41,3 @@ def authjwt_exception_handler(request: Request, exc: AuthJWTException):
         status_code=exc.status_code,
         content={"detail": exc.message}
     )
-
-

@@ -5,14 +5,15 @@ from core.models.itemModel import ItemModel
 from core.models.categoryModel import CategoryModel
 from core.models.warehouseModel import WarehouseModel
 from core.schemas.itemSchema import ItemSchema
+from . import Session
 
 
-def add(itemSchema: ItemSchema, userId: int):
+def add(session: Session, itemSchema: ItemSchema, userId: int):
 
-    categoryModel: CategoryModel = CD.get_by_name(itemSchema.category)
+    categoryModel: CategoryModel = CD.get_by_name(session, itemSchema.category)
     categoryId = categoryModel.id
 
-    warehouseModel: WarehouseModel = WD.get_by_name(itemSchema.warehouse)
+    warehouseModel: WarehouseModel = WD.get_by_name(session, itemSchema.warehouse)
     warehouseId = warehouseModel.id
 
     try:
@@ -30,13 +31,13 @@ def add(itemSchema: ItemSchema, userId: int):
         keywords=keyword_string,
         user_id=userId
     )
-    IC.add(itemModel)
+    IC.add(session, itemModel)
 
 
-def get_by_id(itemId: int):
-    model = IC.get_by_id(itemId)
-    categoryModel = CD.get_by_id(model.category_id)
-    warehouseModel = WD.get_by_id(model.warehouse_id)
+def get_by_id(session: Session, itemId: int):
+    model = IC.get_by_id(session, itemId)
+    categoryModel = CD.get_by_id(session, model.category_id)
+    warehouseModel = WD.get_by_id(session, model.warehouse_id)
     keywords = model.keywords.split(';')
     value = str(model.value)
 
@@ -54,14 +55,14 @@ def get_by_id(itemId: int):
     return itemSchema
 
 
-def get_list(length: int = 10, skip: int = 0):
+def get_list(session: Session, length: int = 10, skip: int = 0):
 
-    models = IC.get_list(length=length, skip=skip)
+    models = IC.get_list(session, length=length, skip=skip)
 
     itemSchemas = []
     for model in models:
-        categorySchema = CD.get_by_id(model.category_id)
-        warehouseSchema = WD.get_by_id(model.warehouse_id)
+        categorySchema = CD.get_by_id(session, model.category_id)
+        warehouseSchema = WD.get_by_id(session, model.warehouse_id)
         keywords = model.keywords.split(';')
         value = str(model.value)
         itemSchema = ItemSchema(
@@ -79,17 +80,17 @@ def get_list(length: int = 10, skip: int = 0):
     return itemSchemas
 
 
-def delete(itemId: int):
-    get_by_id(itemId)
-    IC.delete(itemId)
+def delete(session: Session, itemId: int):
+    get_by_id(session, itemId)
+    IC.delete(session, itemId)
 
 
-def edit(itemSchema: ItemSchema):
+def edit(session: Session, itemSchema: ItemSchema):
 
-    categoryModel: CategoryModel = CD.get_by_name(itemSchema.category)
+    categoryModel: CategoryModel = CD.get_by_name(session, itemSchema.category)
     categoryId = categoryModel.id
 
-    warehouseModel: WarehouseModel = WD.get_by_name(itemSchema.warehouse)
+    warehouseModel: WarehouseModel = WD.get_by_name(session, itemSchema.warehouse)
     warehouseId = warehouseModel.id
 
     try:
@@ -110,4 +111,4 @@ def edit(itemSchema: ItemSchema):
         user_id=itemSchema.user_id
     )
 
-    IC.edit(itemModel)
+    IC.edit(session, itemModel)
