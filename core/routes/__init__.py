@@ -1,3 +1,4 @@
+from core.models import *
 import core.models
 from core.db import engine, SessionLocal
 from sqlalchemy.orm import Session
