@@ -26,3 +26,8 @@ def edit(session: Session, editModel: RegistrationTokenModel):
     oldModel: RegistrationTokenModel = session.query(RegistrationTokenModel).filter(RegistrationTokenModel.id == editModel.id).first()
 
     assert oldModel.user_id == editModel.user_id
+    assert oldModel.token == editModel.token
+
+    oldModel.users_limit = editModel.users_limit
+
+    session.commit()
