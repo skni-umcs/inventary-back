@@ -9,5 +9,6 @@ __all__ = [
     'privilegesModel',
     'userModel',
     'warehouseModel',
-    'registrationTokenModel'
+    'registrationTokenModel',
+    'registrationModel'
 ]
