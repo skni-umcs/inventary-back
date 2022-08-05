@@ -14,3 +14,11 @@ def get_by_username(session: Session, username: str):
     )
 
     return userSchema
+
+
+def get_username_by_id(session: Session, userId: int) -> str:
+    userModel: UserModel = UC.get_by_id(session, userId)
+
+    username = userModel.username
+
+    return username
