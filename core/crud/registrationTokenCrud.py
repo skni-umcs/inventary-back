@@ -12,6 +12,11 @@ def get_by_token(session: Session, token: str) -> RegistrationTokenModel:
     return tokenModel
 
 
+def get_by_creator_id(session: Session, creatorId: int) -> list[RegistrationTokenModel]:
+    tokenModels: list[RegistrationTokenModel] = session.query(RegistrationTokenModel).filter(RegistrationTokenModel.user_id == creatorId)
+    return tokenModels
+
+
 def add(session: Session, model: RegistrationTokenModel) -> None:
     session.add(model)
     session.commit()
