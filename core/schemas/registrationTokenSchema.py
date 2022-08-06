@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class RegistrationTokenSchema(BaseModel):
-    id: int
+    id: int | None = None
     name: str
     token: str
     users_limit: int
