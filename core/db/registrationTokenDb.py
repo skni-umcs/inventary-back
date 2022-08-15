@@ -50,11 +50,14 @@ def get_by_creator_id(session: Session, creatorId: int) -> list[RegistrationToke
 def get_by_token(session: Session, token: str) -> RegistrationTokenSchema:
     tokenModel: RegistrationTokenModel = RTC.get_by_token(session, token)
 
+    assert tokenModel
+
     usersRegistered = RD.get_usernames_by_token_id(session, tokenModel.id)
     creatorUsername = UD.get_username_by_id(session, tokenModel.user_id)
 
     tokenSchema = RegistrationTokenSchema(
         id=tokenModel.id,
+        name=tokenModel.name,
         token=tokenModel.token,
         users_limit=tokenModel.users_limit,
         users_registered=usersRegistered,

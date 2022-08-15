@@ -4,6 +4,7 @@ import random
 from . import Session
 
 import core.db.userDb as UD
+import core.db.registrationDb as RD
 import core.db.registrationTokenDb as RTD
 
 from core.schemas.userSchema import UserSchema
@@ -39,12 +40,26 @@ def get_valid_token(session: Session, token: str) -> RegistrationTokenSchema | N
 
 def validate_user(session: Session, user: UserSchema) -> bool:
     assert not UD.get_by_username(session, user.username)
+    assert user.username
+    if len(user.username) < 3:
+        assert None
 
+    assert user.password
     assert user.password == user.password_repeat
+    if len(user.password) < 8:
+        assert None
+
+    assert user.firstname
+    assert user.lastname
+
+    assert user.email
+    assert not UD.get_by_email(session, user.email)
+
+    return True
 
 
-
-
-
-def registerUser(session: Session, token: RegistrationTokenSchema, user: UserSchema) -> None:
-    pass
+def registerUser(session: Session, token: RegistrationTokenSchema, userSchema: UserSchema) -> None:
+    UD.add(session, userSchema)
+    userId = UD.get_by_username(session, userSchema.username).id
+    token.users_registered.append(userSchema.username)
+    RD.add_registration(session, token.id, userId)

@@ -34,3 +34,15 @@ def get_by_email(session: Session, email: str):
     )
 
     return userSchema
+
+
+def add(session: Session, userSchema: UserSchema):
+    userModel = UserModel(
+        username=userSchema.username,
+        firstname=userSchema.username,
+        lastname=userSchema.lastname,
+        email=userSchema.email,
+        hashed_password=userSchema.password,
+        privileges_id=1
+    )
+    UC.add(session, userModel)

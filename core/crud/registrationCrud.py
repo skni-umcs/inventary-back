@@ -13,7 +13,7 @@ def get_by_user_id(session: Session, userId: int) -> RegistrationModel:
 
 
 def get_by_token_id(session: Session, tokenId: int) -> list[RegistrationModel]:
-    registrationModels: list[RegistrationModel] = session.query(RegistrationModel).filter(RegistrationModel.user_id == tokenId)
+    registrationModels: list[RegistrationModel] = session.query(RegistrationModel).filter(RegistrationModel.token_id == tokenId)
     return registrationModels
 
 
@@ -27,7 +27,3 @@ def remove(session: Session, model: RegistrationModel) -> None:
     session.commit()
 
 
-# def edit(session: Session, editModel: RegistrationModel):
-#     oldModel: RegistrationModel = session.query(RegistrationModel).filter(RegistrationModel.id == editModel.id).first()
-#
-#     assert oldModel.user_id == editModel.user_id

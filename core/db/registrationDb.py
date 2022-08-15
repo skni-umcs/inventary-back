@@ -44,3 +44,12 @@ def get_usernames_by_token_id(session: Session, tokenId: int) -> list[str]:
         usernames.append(username)
 
     return usernames
+
+
+def add_registration(session: Session, tokenId: int, userId: int):
+    registrationModel = RegistrationModel(
+        user_id=userId,
+        token_id=tokenId
+    )
+
+    RC.add(session, registrationModel)
