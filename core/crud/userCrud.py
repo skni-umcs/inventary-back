@@ -2,18 +2,18 @@ from . import Session
 from core.models.userModel import UserModel
 
 
-def add(session: Session, item: UserModel):
-    session.add(item)
+def add(session: Session, userModel: UserModel):
+    session.add(userModel)
     session.commit()
 
 
 def get_by_id(session: Session, userId: int):
-    item = session.query(UserModel).filter(UserModel.id == userId).first()
+    userModel = session.query(UserModel).filter(UserModel.id == userId).first()
 
-    return item
+    return userModel
 
 
 def get_by_username(session: Session, username: str):
-    items = session.query(UserModel).filter(UserModel.username == username).first()
+    userModel = session.query(UserModel).filter(UserModel.username == username).first()
 
-    return items
+    return userModel
