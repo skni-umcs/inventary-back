@@ -1,5 +1,3 @@
-from types import NoneType
-
 from fastapi import APIRouter, HTTPException, Depends
 from core.schemas import UserSchema
 from fastapi_jwt_auth import AuthJWT
@@ -18,11 +16,7 @@ def register(token: str, user: UserSchema, Authorize: AuthJWT = Depends(), sessi
     if Authorize.get_jwt_subject():
         HTTPException(status_code=401, detail="Already logged in")
 
-    try:
-        UD.get_by_username(session, user.username)
-    except NoneType:
-        pass
-    else:
+    if UD.get_by_username(session, user.username):
         raise HTTPException(status_code=422, detail="Username already exists")
 
     if user.password != user.password_repeat:

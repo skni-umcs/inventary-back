@@ -6,6 +6,8 @@ from . import Session
 
 def get_by_username(session: Session, username: str):
     userModel: UserModel = UC.get_by_username(session, username)
+    if userModel is None:
+        return None
 
     userSchema = UserSchema(
         id=userModel.id,
@@ -26,6 +28,9 @@ def get_username_by_id(session: Session, userId: int) -> str:
 
 def get_by_email(session: Session, email: str):
     userModel: UserModel = UC.get_by_email(session, email)
+    if userModel is None:
+        return None
+
 
     userSchema = UserSchema(
         id=userModel.id,
