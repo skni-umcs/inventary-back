@@ -5,12 +5,12 @@ from . import Session
 
 
 def get_by_username(session: Session, username: str):
-    model: UserModel = UC.get_by_username(session, username)
+    userModel: UserModel = UC.get_by_username(session, username)
 
     userSchema = UserSchema(
-        id=model.id,
-        username=model.username,
-        password=model.hashed_password
+        id=userModel.id,
+        username=userModel.username,
+        password=userModel.hashed_password
     )
 
     return userSchema
@@ -22,3 +22,15 @@ def get_username_by_id(session: Session, userId: int) -> str:
     username = userModel.username
 
     return username
+
+
+def get_by_email(session: Session, email: str):
+    userModel: UserModel = UC.get_by_email(session, email)
+
+    userSchema = UserSchema(
+        id=userModel.id,
+        username=userModel.username,
+        password=userModel.hashed_password
+    )
+
+    return userSchema
