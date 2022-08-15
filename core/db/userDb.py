@@ -2,6 +2,7 @@ import core.crud.userCrud as UC
 from core.models.userModel import UserModel
 from core.schemas.userSchema import UserSchema
 from . import Session
+import bcrypt
 
 
 def get_by_username(session: Session, username: str):
@@ -47,7 +48,7 @@ def add(session: Session, userSchema: UserSchema):
         firstname=userSchema.username,
         lastname=userSchema.lastname,
         email=userSchema.email,
-        hashed_password=userSchema.password,
+        hashed_password=bcrypt.hashpw(userSchema.password.encode('UTF-8'), bcrypt.gensalt()),
         privileges_id=1
     )
     UC.add(session, userModel)

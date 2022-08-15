@@ -4,6 +4,7 @@ from fastapi_jwt_auth import AuthJWT
 from datetime import timedelta
 import core.db.userDb as UD
 from .. import get_db_session, Session
+import bcrypt
 
 router = APIRouter()
 
@@ -15,7 +16,7 @@ def login(user: UserSchema, Authorize: AuthJWT = Depends(), session: Session = D
     except AttributeError:
         raise HTTPException(status_code=401, detail="Bad username or password")
 
-    if user.username != userDB.username or user.password != userDB.password:
+    if user.username != userDB.username or bcrypt.checkpw(user.password.encode('UTF-8'), userDB.password):
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # subject identifier for who this token is for example id or username from database
