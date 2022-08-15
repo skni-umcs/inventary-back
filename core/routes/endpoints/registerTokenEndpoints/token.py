@@ -3,7 +3,7 @@ from fastapi_jwt_auth import AuthJWT
 import core.db.registrationTokenDb as RTD
 import core.db.userDb as UD
 from ... import get_db_session, Session
-import core.logic.registrationTokens as RTL
+import core.logic.registration as RTL
 from sqlalchemy.exc import IntegrityError
 
 router = APIRouter()
