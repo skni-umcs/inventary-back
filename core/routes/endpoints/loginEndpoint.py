@@ -14,9 +14,9 @@ def login(user: UserSchema, Authorize: AuthJWT = Depends(), session: Session = D
     try:
         userDB = UD.get_by_username(session, user.username)
     except AttributeError:
-        raise HTTPException(status_code=401, detail="Bad username or password")
+        raise HTTPException(status_code=402, detail="User with that username not found")
 
-    if user.username != userDB.username or bcrypt.checkpw(user.password.encode('UTF-8'), userDB.password):
+    if user.username != userDB.username or not bcrypt.checkpw(user.password.encode('UTF-8'), userDB.password.encode('UTF-8')):
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # subject identifier for who this token is for example id or username from database
