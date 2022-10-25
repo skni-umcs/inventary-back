@@ -11,11 +11,11 @@ router = APIRouter()
 @router.post('/login')
 def login(user: UserSchema, Authorize: AuthJWT = Depends(), session: Session = Depends(get_db_session)):
     try:
-        userDB = UD.get_by_username(session, user.username)
+        userDB = UD.get_by_lowercase_username(session, user.username)
     except AttributeError:
         raise HTTPException(status_code=401, detail="Bad username or password")
 
-    if user.username != userDB.username or user.password != userDB.password:
+    if user.username.lower() != userDB.username.lower() or user.password != userDB.password:
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # subject identifier for who this token is for example id or username from database

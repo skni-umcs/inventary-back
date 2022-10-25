@@ -43,7 +43,7 @@ def add_item(item: ItemSchema, Authorize: AuthJWT = Depends(), session: Session 
 
     currentUser = Authorize.get_jwt_subject()
 
-    userSchema = UD.get_by_username(session, currentUser)
+    userSchema = UD.get_by_lowercase_username(session, currentUser)
 
     try:
         ID.add(session, item, userSchema.id)
@@ -67,7 +67,7 @@ def edit_item(itemSchema: ItemSchema, Authorize: AuthJWT = Depends(), session: S
 
     currentUser = Authorize.get_jwt_subject()
 
-    userSchema = UD.get_by_username(session, currentUser)
+    userSchema = UD.get_by_lowercase_username(session, currentUser)
 
     itemSchema.user_id = userSchema.id
 
