@@ -31,7 +31,7 @@ def delete(session: Session, itemId: int):
 
 
 def edit(session: Session, editModel: ItemModel):
-    itemModel: ItemModel = session.query(ItemModel).filter(ItemModel.id == editModel.id).first()
+    itemModel: ItemModel = session.query(ItemModel).filter(ItemModel.id == editModel.id).first()  # TODO change to function call
 
     itemModel.name = editModel.name
     itemModel.value = editModel.value
