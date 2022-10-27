@@ -1,36 +1,34 @@
 version: '3.0'
-services:
-  backend:
-    build: .
-    ports:
-      - "8555:8555"
-    container_name: inventaryAPI
-    # environment:
 
-    volumes:
-      - .:/code
-    restart: always
-    networks:
-      - back
-#     depends_on:
-#       - db
+volumes:
+  db_data:
+
+services:
   db:
     image: mysql
-#    command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=inventary
       - MYSQL_USER=inventary
       - MYSQL_PASSWORD=inventary
+    healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 10s
+            retries: 10
     ports:
      - "3306:3306"
     volumes:
-     - ./data/mysql:/var/lib/mysql
-    networks:
-      - back
+     - db_data:/var/lib/mysql
 
-
-networks:
-    back:
-
+  backend:
+    build: .
+    ports:
+      - "8555:8555"
+    container_name: inventaryAPI
+    volumes:
+      - .:/code:ro
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
