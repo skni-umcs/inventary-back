@@ -9,9 +9,21 @@ build-job:
     - docker build .
 
 
-deploy_prod:
+deploy_dev:
   stage: deploy
   script:
     - docker compose up -d --build
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "development"
+  tags:
+    - dev-runner
+
+
+deploy_master:
+  stage: deploy
+  script:
+    - docker compose up -d --build
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+  tags:
+    - master-runner
