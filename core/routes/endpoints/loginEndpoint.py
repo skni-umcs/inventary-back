@@ -15,7 +15,7 @@ def login(user: UserSchema, Authorize: AuthJWT = Depends(), session: Session = D
     except AttributeError:
         raise HTTPException(status_code=401, detail="Bad username or password")
 
-    if user.username.lower() != userDB.username.lower() or user.password != userDB.password:
+    if userDB is None or user.username.lower() != userDB.username.lower() or user.password != userDB.password:
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # subject identifier for who this token is for example id or username from database
