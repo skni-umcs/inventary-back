@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import date
 
 
 class ItemSchema(BaseModel):
@@ -9,4 +10,8 @@ class ItemSchema(BaseModel):
     warehouse: str
     description: str
     keywords: list
+
     user_id: int | None = None
+
+    added_date: date | None = None
+    deleted_date: str | None = None
