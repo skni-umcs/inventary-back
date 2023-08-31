@@ -1,4 +1,4 @@
-from . import Column, Integer, String, Base, ForeignKey
+from . import Column, Integer, String, Base, ForeignKey, DateTime, Boolean
 from core.models.userModel import UserModel
 from core.models.categoryModel import CategoryModel
 from core.models.warehouseModel import WarehouseModel
@@ -13,4 +13,8 @@ class ItemModel(Base):
     warehouse_id = Column(Integer, ForeignKey(WarehouseModel.id))
     description = Column(String(250))
     keywords = Column(String(1000))
+
     user_id = Column(Integer, ForeignKey(UserModel.id))
+
+    added_date = Column(DateTime, nullable=False)
+    deleted_date = Column(DateTime, nullable=True)

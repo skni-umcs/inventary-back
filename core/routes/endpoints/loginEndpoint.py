@@ -15,14 +15,14 @@ def login(user: UserSchema, Authorize: AuthJWT = Depends(), session: Session = D
     except AttributeError:
         raise HTTPException(status_code=401, detail="Bad username or password")
 
-    if user.username.lower() != userDB.username.lower() or user.password != userDB.password:
+    if userDB is None or user.username.lower() != userDB.username.lower() or user.password != userDB.password:
         raise HTTPException(status_code=401, detail="Bad username or password")
 
     # subject identifier for who this token is for example id or username from database
     access_token = Authorize.create_access_token(subject=user.username, expires_time=timedelta(minutes=15), fresh=True)
     refresh_token = Authorize.create_refresh_token(subject=user.username)
 
-    userDB.password = "Gdzie kurwa"
+    userDB.password = ""
 
     return {"message": "OK",
             "token": access_token,

@@ -5,7 +5,7 @@ from core.models.itemModel import ItemModel
 from core.models.categoryModel import CategoryModel
 from core.models.warehouseModel import WarehouseModel
 from core.schemas.itemSchema import ItemSchema
-from . import Session
+from . import Session, datetime
 
 
 def add(session: Session, itemSchema: ItemSchema, userId: int):
@@ -29,7 +29,8 @@ def add(session: Session, itemSchema: ItemSchema, userId: int):
         warehouse_id=warehouseId,
         description=itemSchema.description,
         keywords=keyword_string,
-        user_id=userId
+        user_id=userId,
+        added_date=datetime.utcnow()
     )
     IC.add(session, itemModel)
 
