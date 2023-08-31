@@ -22,7 +22,7 @@ def login(user: UserSchema, Authorize: AuthJWT = Depends(), session: Session = D
     access_token = Authorize.create_access_token(subject=user.username, expires_time=timedelta(minutes=15), fresh=True)
     refresh_token = Authorize.create_refresh_token(subject=user.username)
 
-    userDB.password = "Gdzie kurwa"
+    userDB.password = ""
 
     return {"message": "OK",
             "token": access_token,
