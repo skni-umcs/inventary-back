@@ -1,6 +1,6 @@
-# Inventary Website (frontend)
+# Inventary API (Backend)
 
-Website source for the Inventary project
+API source for the Inventary project
 Inventary is a website allowing you to keep track of your inventory supporting multiple warehouses
 
 <a href="https://github.com/skni-umcs/inventary-front">Frontend</a>
